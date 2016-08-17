@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Animation<T: Interpolatable where T.ValueType == T> {
+public class Animation<T: Interpolatable> where T.ValueType == T {
     private let filmstrip = Filmstrip<T>()
     
     public init() {}
@@ -18,17 +18,17 @@ public class Animation<T: Interpolatable where T.ValueType == T> {
             return filmstrip[time]
         }
         set {
-            addKeyframe(time, value: newValue)
+            addKeyframe(time: time, value: newValue)
         }
     }
     
     public func addKeyframe(time: CGFloat, value: T) {
-        if !checkValidity(value) {return}
+        if !checkValidity(value: value) {return}
         filmstrip[time] = value
     }
     
     public func addKeyframe(time: CGFloat, value: T, easing: EasingFunction) {
-        if !checkValidity(value) {return}
+        if !checkValidity(value: value) {return}
         filmstrip.setValue(value, atTime: time, easing: easing)
     }
     
@@ -41,7 +41,7 @@ public class Animation<T: Interpolatable where T.ValueType == T> {
     }
     
     private func checkValidity(value: T) -> Bool {
-        let valid = validateValue(value)
+        let valid = validateValue(value: value)
         assert(valid, "The keyframe value is invalid for this type of animation.")
         return valid
     }

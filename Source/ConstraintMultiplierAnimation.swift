@@ -45,17 +45,17 @@ public class ConstraintMultiplierAnimation : Animation<CGFloat>, Animatable {
         var referenceAttributeValue : CGFloat
         switch attribute {
         case .OriginX:
-            referenceAttributeValue = CGRectGetMinX(referenceView.frame)
+            referenceAttributeValue = referenceView.frame.minX
         case .OriginY:
-            referenceAttributeValue = CGRectGetMinY(referenceView.frame)
+            referenceAttributeValue = referenceView.frame.minY
         case .CenterX:
-            referenceAttributeValue = CGRectGetMinX(referenceView.frame) + (CGRectGetWidth(referenceView.frame) / 2.0)
+            referenceAttributeValue = referenceView.frame.minX + (referenceView.frame.width / 2.0)
         case .CenterY:
-            referenceAttributeValue = CGRectGetMinY(referenceView.frame) + (CGRectGetHeight(referenceView.frame) / 2.0)
+            referenceAttributeValue = referenceView.frame.minY + (referenceView.frame.height / 2.0)
         case .Width:
-            referenceAttributeValue = CGRectGetWidth(referenceView.frame)
+            referenceAttributeValue = referenceView.frame.width
         case .Height:
-            referenceAttributeValue = CGRectGetHeight(referenceView.frame)
+            referenceAttributeValue = referenceView.frame.height
         }
         constraint.constant = (multiplier * referenceAttributeValue) + constant
         superview.layoutIfNeeded()

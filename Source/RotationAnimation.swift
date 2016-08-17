@@ -22,14 +22,14 @@ public class RotationAnimation : Animation<CGFloat>, Animatable {
         if !hasKeyframes() {return}
         let degrees = self[time]
         let radians = degrees * CGFloat(M_PI / -180.0)
-        let rotationTransform = CGAffineTransformMakeRotation(radians)
+        let rotationTransform = CGAffineTransform(rotationAngle: radians)
         view.rotationTransform = rotationTransform
         var newTransform = rotationTransform
         if let scaleTransform = view.scaleTransform {
-            newTransform = CGAffineTransformConcat(newTransform, scaleTransform)
+            newTransform = newTransform.concatenating(scaleTransform)
         }
         if let translationTransform = view.translationTransform {
-            newTransform = CGAffineTransformConcat(newTransform, translationTransform)
+            newTransform = newTransform.concatenating(translationTransform)
         }
         view.transform = newTransform
     }

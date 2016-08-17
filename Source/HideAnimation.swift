@@ -29,6 +29,6 @@ public class HideAnimation : Animatable {
     
     public func animate(time: CGFloat) {
         if filmstrip.isEmpty {return}
-        view.hidden = filmstrip[time]
+        view.isHidden = filmstrip[time]
     }
 }

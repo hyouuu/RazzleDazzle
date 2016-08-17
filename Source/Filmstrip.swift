@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate class Keyframe<T: Interpolatable where T.ValueType == T> {
+fileprivate class Keyframe<T: Interpolatable> where T.ValueType == T {
     let time : CGFloat
     let value : T
     let easing : EasingFunction
@@ -27,7 +27,7 @@ fileprivate class Keyframe<T: Interpolatable where T.ValueType == T> {
 /**
 Keeps track of the keyframes set, and lazily generates interpolated values between them for the requested time as needed.
 */
-public class Filmstrip<T: Interpolatable where T.ValueType == T> {
+public class Filmstrip<T: Interpolatable> where T.ValueType == T {
     
     private var keyframes = [Keyframe<T>]()
     
@@ -69,7 +69,7 @@ public class Filmstrip<T: Interpolatable where T.ValueType == T> {
             let keyframeBefore = keyframes[indexAfter - 1]
             let keyframeAfter = keyframes[indexAfter]
             let progress = progressFromTime(keyframeBefore.time, toTime: keyframeAfter.time, atTime: time, easing: keyframeBefore.easing)
-            value = T.interpolateFrom(keyframeBefore.value, to: keyframeAfter.value, withProgress: progress)
+            value = T.interpolateFrom(fromValue: keyframeBefore.value, to: keyframeAfter.value, withProgress: progress)
         default:
             value = keyframes.last!.value
         }

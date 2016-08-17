@@ -21,14 +21,14 @@ public class ScaleAnimation : Animation<CGFloat>, Animatable {
     public func animate(time: CGFloat) {
         if !hasKeyframes() {return}
         let scale = self[time]
-        let scaleTransform = CGAffineTransformMakeScale(scale, scale)
+        let scaleTransform = CGAffineTransform(scaleX: scale, y: scale)
         view.scaleTransform = scaleTransform
         var newTransform = scaleTransform
         if let rotationTransform = view.rotationTransform {
-            newTransform = CGAffineTransformConcat(newTransform, rotationTransform)
+            newTransform = newTransform.concatenating(rotationTransform)
         }
         if let translationTransform = view.translationTransform {
-            newTransform = CGAffineTransformConcat(newTransform, translationTransform)
+            newTransform = newTransform.concatenating(translationTransform)
         }
         view.transform = newTransform
     }

@@ -20,6 +20,6 @@ public class LayerFillColorAnimation : Animation<UIColor>, Animatable {
     
     public func animate(time: CGFloat) {
         if !hasKeyframes() {return}
-        layer.fillColor = self[time].CGColor
+        layer.fillColor = self[time].cgColor
     }
 }

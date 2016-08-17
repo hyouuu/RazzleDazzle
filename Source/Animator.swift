@@ -18,7 +18,7 @@ public class Animator {
     
     public func animate(time: CGFloat) {
         for animation in animations {
-            animation.animate(time)
+            animation.animate(time: time)
         }
     }
     
