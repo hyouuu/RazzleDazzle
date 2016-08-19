@@ -9,12 +9,12 @@
 import UIKit
 
 public enum LayoutAttribute {
-    case OriginX
-    case OriginY
-    case CenterX
-    case CenterY
-    case Width
-    case Height
+    case originX
+    case originY
+    case centerX
+    case centerY
+    case width
+    case height
 }
 
 /**
@@ -44,17 +44,17 @@ public class ConstraintMultiplierAnimation : Animation<CGFloat>, Animatable {
         let multiplier = self[time]
         var referenceAttributeValue : CGFloat
         switch attribute {
-        case .OriginX:
+        case .originX:
             referenceAttributeValue = referenceView.frame.minX
-        case .OriginY:
+        case .originY:
             referenceAttributeValue = referenceView.frame.minY
-        case .CenterX:
+        case .centerX:
             referenceAttributeValue = referenceView.frame.minX + (referenceView.frame.width / 2.0)
-        case .CenterY:
+        case .centerY:
             referenceAttributeValue = referenceView.frame.minY + (referenceView.frame.height / 2.0)
-        case .Width:
+        case .width:
             referenceAttributeValue = referenceView.frame.width
-        case .Height:
+        case .height:
             referenceAttributeValue = referenceView.frame.height
         }
         constraint.constant = (multiplier * referenceAttributeValue) + constant

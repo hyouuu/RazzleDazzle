@@ -11,17 +11,17 @@ import UIKit
 /**
 View controller for creating scrolling app intros. Set animation times based on the page number, and this view controller handles calling `animate:` on the `animator`.
 */
-public class AnimatedPagingScrollViewController : UIViewController, UIScrollViewDelegate {
-    public let scrollView = UIScrollView()
-    public let contentView = UIView()
-    public var animator = Animator()
-    private var scrollViewPageConstraintAnimations = [ScrollViewPageConstraintAnimation]()
-    public var pageWidth : CGFloat {
+open class AnimatedPagingScrollViewController : UIViewController, UIScrollViewDelegate {
+    open let scrollView = UIScrollView()
+    open let contentView = UIView()
+    open var animator = Animator()
+    fileprivate var scrollViewPageConstraintAnimations = [ScrollViewPageConstraintAnimation]()
+    open var pageWidth : CGFloat {
         get {
             return scrollView.frame.width
         }
     }
-    public var pageOffset : CGFloat {
+    open var pageOffset : CGFloat {
         get {
             var currentOffset = scrollView.contentOffset.x
             if pageWidth > 0 {
@@ -31,11 +31,11 @@ public class AnimatedPagingScrollViewController : UIViewController, UIScrollView
         }
     }
     
-    public func numberOfPages() -> Int {
+    open func numberOfPages() -> Int {
         return 2
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
         scrollView.isPagingEnabled = true
@@ -63,12 +63,12 @@ public class AnimatedPagingScrollViewController : UIViewController, UIScrollView
         NSLayoutConstraint.activate([contentViewWidth, contentViewHeight])
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animateCurrentFrame()
     }
     
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
         let newPageWidth = size.width
@@ -82,36 +82,36 @@ public class AnimatedPagingScrollViewController : UIViewController, UIScrollView
             }, completion: nil)
     }
     
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
+    open func scrollViewDidScroll(scrollView: UIScrollView) {
         animateCurrentFrame()
     }
     
-    public func animateCurrentFrame () {
+    open func animateCurrentFrame () {
         animator.animate(time: pageOffset)
     }
     
-    public func keepView(view: UIView, onPage page: CGFloat) {
+    open func keepView(view: UIView, onPage page: CGFloat) {
         keepView(view: view, onPage: page, withAttribute: .CenterX)
     }
     
-    public func keepView(view: UIView, onPage page: CGFloat, withAttribute attribute: HorizontalPositionAttribute) {
+    open func keepView(view: UIView, onPage page: CGFloat, withAttribute attribute: HorizontalPositionAttribute) {
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: view, attribute: layoutAttributeFromRazAttribute(razAttribute: attribute), relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: multiplierForPage(page: page, attribute: attribute), constant: 0).isActive = true
     }
     
-    public func keepView(view: UIView, onPages pages: [CGFloat]) {
+    open func keepView(view: UIView, onPages pages: [CGFloat]) {
         keepView(view: view, onPages: pages, atTimes: pages)
     }
     
-    public func keepView(view: UIView, onPages pages: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
+    open func keepView(view: UIView, onPages pages: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
         keepView(view: view, onPages: pages, atTimes: pages, withAttribute: attribute)
     }
 
-    public func keepView(view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat]) {
+    open func keepView(view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat]) {
         keepView(view: view, onPages: pages, atTimes: times, withAttribute: .CenterX)
     }
     
-    public func keepView(view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
+    open func keepView(view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
         assert(pages.count == times.count, "Make sure you set a time for each position.")
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -125,19 +125,19 @@ public class AnimatedPagingScrollViewController : UIViewController, UIScrollView
         scrollViewPageConstraintAnimations.append(xPositionAnimation)
     }
     
-    public func centerXMultiplierForPage(page: CGFloat) -> CGFloat {
+    open func centerXMultiplierForPage(page: CGFloat) -> CGFloat {
         return multiplierForPage(page: page, attribute: .CenterX)
     }
     
-    public func leftMultiplierForPage(page: CGFloat) -> CGFloat {
+    open func leftMultiplierForPage(page: CGFloat) -> CGFloat {
         return multiplierForPage(page: page, attribute: .Left)
     }
     
-    public func rightMultiplierForPage(page: CGFloat) -> CGFloat {
+    open func rightMultiplierForPage(page: CGFloat) -> CGFloat {
         return multiplierForPage(page: page, attribute: .Right)
     }
     
-    public func multiplierForPage(page: CGFloat, attribute: HorizontalPositionAttribute) -> CGFloat {
+    open func multiplierForPage(page: CGFloat, attribute: HorizontalPositionAttribute) -> CGFloat {
         var offset : CGFloat
         switch attribute {
         case .CenterX:
@@ -150,7 +150,7 @@ public class AnimatedPagingScrollViewController : UIViewController, UIScrollView
         return 2.0 * (offset + page) / CGFloat(numberOfPages())
     }
     
-    public func layoutAttributeFromRazAttribute(razAttribute: HorizontalPositionAttribute) -> NSLayoutAttribute {
+    open func layoutAttributeFromRazAttribute(razAttribute: HorizontalPositionAttribute) -> NSLayoutAttribute {
         var attribute : NSLayoutAttribute
         switch razAttribute {
         case .CenterX:
