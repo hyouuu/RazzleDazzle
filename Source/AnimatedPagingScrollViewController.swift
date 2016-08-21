@@ -9,8 +9,8 @@
 import UIKit
 
 /**
- View controller for creating scrolling app intros. Set animation times based on the page number, and this view controller handles calling `animate:` on the `animator`.
- */
+View controller for creating scrolling app intros. Set animation times based on the page number, and this view controller handles calling `animate:` on the `animator`.
+*/
 open class AnimatedPagingScrollViewController : UIViewController, UIScrollViewDelegate {
     open let scrollView = UIScrollView()
     open let contentView = UIView()
@@ -40,8 +40,7 @@ open class AnimatedPagingScrollViewController : UIViewController, UIScrollViewDe
         scrollView.delegate = self
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.contentSize = CGSize(width: CGFloat(numberOfPages()) * view.frame.width,
-                                        height: view.frame.height)
+        scrollView.contentSize = CGSize(width: CGFloat(numberOfPages()) * view.frame.width, height: view.frame.height)
         view.addSubview(scrollView)
         scrollView.frame = view.bounds
         scrollView.addSubview(contentView)
@@ -75,84 +74,85 @@ open class AnimatedPagingScrollViewController : UIViewController, UIScrollViewDe
             }, completion: nil)
     }
     
-    open func scrollViewDidScroll(scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         animateCurrentFrame()
     }
     
     open func animateCurrentFrame () {
-        animator.animate(time: pageOffset)
+        animator.animate(pageOffset)
     }
     
-    open func keepView(view: UIView, onPage page: CGFloat) {
-        keepView(view: view, onPage: page, withAttribute: .CenterX)
+    open func keepView(_ view: UIView, onPage page: CGFloat) {
+        keepView(view, onPage: page, withAttribute: .centerX)
     }
     
-    open func keepView(view: UIView, onPage page: CGFloat, withAttribute attribute: HorizontalPositionAttribute) {
+    open func keepView(_ view: UIView, onPage page: CGFloat, withAttribute attribute: HorizontalPositionAttribute) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addConstraint(NSLayoutConstraint(item: view, attribute: layoutAttributeFromRazAttribute(razAttribute: attribute), relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: multiplierForPage(page: page, attribute: attribute), constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: view, attribute: layoutAttributeFromRazAttribute(attribute), relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: multiplierForPage(page, attribute: attribute), constant: 0))
     }
     
-    open func keepView(view: UIView, onPages pages: [CGFloat]) {
-        keepView(view: view, onPages: pages, atTimes: pages)
+    open func keepView(_ view: UIView, onPages pages: [CGFloat]) {
+        keepView(view, onPages: pages, atTimes: pages)
     }
     
-    open func keepView(view: UIView, onPages pages: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
-        keepView(view: view, onPages: pages, atTimes: pages, withAttribute: attribute)
+    open func keepView(_ view: UIView, onPages pages: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
+        keepView(view, onPages: pages, atTimes: pages, withAttribute: attribute)
+    }
+
+    open func keepView(_ view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat]) {
+        keepView(view, onPages: pages, atTimes: times, withAttribute: .centerX)
     }
     
-    open func keepView(view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat]) {
-        keepView(view: view, onPages: pages, atTimes: times, withAttribute: .CenterX)
-    }
-    
-    open func keepView(view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
+    open func keepView(_ view: UIView, onPages pages: [CGFloat], atTimes times: [CGFloat], withAttribute attribute: HorizontalPositionAttribute) {
         assert(pages.count == times.count, "Make sure you set a time for each position.")
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let xPositionConstraint = NSLayoutConstraint(item: view, attribute: layoutAttributeFromRazAttribute(razAttribute: attribute), relatedBy: .equal, toItem: contentView, attribute: .left, multiplier: 1, constant: 0)
+        let xPositionConstraint = NSLayoutConstraint(item: view, attribute: layoutAttributeFromRazAttribute(attribute), relatedBy: .equal, toItem: contentView, attribute: .left, multiplier: 1, constant: 0)
         contentView.addConstraint(xPositionConstraint)
         let xPositionAnimation = ScrollViewPageConstraintAnimation(superview: contentView, constraint: xPositionConstraint, pageWidth: pageWidth, attribute: attribute)
         for (index, page) in pages.enumerated() {
             xPositionAnimation[times[index]] = page
         }
-        animator.addAnimation(animation: xPositionAnimation)
+        animator.addAnimation(xPositionAnimation)
         scrollViewPageConstraintAnimations.append(xPositionAnimation)
     }
     
-    open func centerXMultiplierForPage(page: CGFloat) -> CGFloat {
-        return multiplierForPage(page: page, attribute: .CenterX)
+    open func centerXMultiplierForPage(_ page: CGFloat) -> CGFloat {
+        return multiplierForPage(page, attribute: .centerX)
     }
     
-    open func leftMultiplierForPage(page: CGFloat) -> CGFloat {
-        return multiplierForPage(page: page, attribute: .Left)
+    open func leftMultiplierForPage(_ page: CGFloat) -> CGFloat {
+        return multiplierForPage(page, attribute: .left)
     }
     
-    open func rightMultiplierForPage(page: CGFloat) -> CGFloat {
-        return multiplierForPage(page: page, attribute: .Right)
+    open func rightMultiplierForPage(_ page: CGFloat) -> CGFloat {
+        return multiplierForPage(page, attribute: .right)
     }
     
-    open func multiplierForPage(page: CGFloat, attribute: HorizontalPositionAttribute) -> CGFloat {
+    open func multiplierForPage(_ page: CGFloat, attribute: HorizontalPositionAttribute) -> CGFloat {
         var offset : CGFloat
         switch attribute {
-        case .CenterX:
+        case .centerX:
             offset = 0.5
-        case .Left:
+        case .left:
             offset = 0
-        case .Right:
+        case .right:
             offset = 1
         }
         return 2.0 * (offset + page) / CGFloat(numberOfPages())
     }
     
-    open func layoutAttributeFromRazAttribute(razAttribute: HorizontalPositionAttribute) -> NSLayoutAttribute {
+    open func layoutAttributeFromRazAttribute(_ razAttribute: HorizontalPositionAttribute) -> NSLayoutAttribute {
         var attribute : NSLayoutAttribute
         switch razAttribute {
-        case .CenterX:
+        case .centerX:
             attribute = .centerX
-        case .Left:
+        case .left:
             attribute = .left
-        case .Right:
+        case .right:
             attribute = .right
         }
         return attribute
     }
 }
+

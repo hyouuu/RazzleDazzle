@@ -21,7 +21,7 @@ public protocol Interpolatable {
     
     - returns: The value at the given progress point between the given starting and ending values
     */
-    static func interpolateFrom(fromValue: ValueType, to toValue: ValueType, withProgress progress: CGFloat) -> ValueType
+    static func interpolateFrom(_ fromValue: ValueType, to toValue: ValueType, withProgress progress: CGFloat) -> ValueType
 }
 
 extension CGFloat : Interpolatable {
@@ -34,7 +34,7 @@ extension CGFloat : Interpolatable {
     
     - returns: The CGFloat at the given progress point between the given starting and ending CGFloats
     */
-    public static func interpolateFrom(fromValue: CGFloat, to toValue: CGFloat, withProgress progress: CGFloat) -> CGFloat {
+    public static func interpolateFrom(_ fromValue: CGFloat, to toValue: CGFloat, withProgress progress: CGFloat) -> CGFloat {
         assert((0 <= progress) && (progress <= 1), "Progress must be between 0 and 1")
         let totalChange = toValue - fromValue
         let currentChange = totalChange * progress
@@ -52,10 +52,10 @@ extension CGPoint : Interpolatable {
     
     - returns: The CGPoint at the given progress point between the given starting and ending CGPoints
     */
-    public static func interpolateFrom(fromValue: CGPoint, to toValue: CGPoint, withProgress progress: CGFloat) -> CGPoint {
+    public static func interpolateFrom(_ fromValue: CGPoint, to toValue: CGPoint, withProgress progress: CGFloat) -> CGPoint {
         assert((0 <= progress) && (progress <= 1), "Progress must be between 0 and 1")
-        let interpolatedX = CGFloat.interpolateFrom(fromValue: fromValue.x, to: toValue.x, withProgress: progress)
-        let interpolatedY = CGFloat.interpolateFrom(fromValue: fromValue.y, to: toValue.y, withProgress: progress)
+        let interpolatedX = CGFloat.interpolateFrom(fromValue.x, to: toValue.x, withProgress: progress)
+        let interpolatedY = CGFloat.interpolateFrom(fromValue.y, to: toValue.y, withProgress: progress)
         return CGPoint(x: interpolatedX, y: interpolatedY)
     }
 }
@@ -70,10 +70,10 @@ extension CGSize : Interpolatable {
     
     - returns: The CGSize at the given progress point between the given starting and ending CGSizes
     */
-    public static func interpolateFrom(fromValue: CGSize, to toValue: CGSize, withProgress progress: CGFloat) -> CGSize {
+    public static func interpolateFrom(_ fromValue: CGSize, to toValue: CGSize, withProgress progress: CGFloat) -> CGSize {
         assert((0 <= progress) && (progress <= 1), "Progress must be between 0 and 1")
-        let interpolatedWidth = CGFloat.interpolateFrom(fromValue: fromValue.width, to: toValue.width, withProgress: progress)
-        let interpolatedHeight = CGFloat.interpolateFrom(fromValue: fromValue.height, to: toValue.height, withProgress: progress)
+        let interpolatedWidth = CGFloat.interpolateFrom(fromValue.width, to: toValue.width, withProgress: progress)
+        let interpolatedHeight = CGFloat.interpolateFrom(fromValue.height, to: toValue.height, withProgress: progress)
         return CGSize(width: interpolatedWidth, height: interpolatedHeight)
     }
 }
@@ -88,14 +88,11 @@ extension CGRect : Interpolatable {
     
     - returns: The CGRect at the given progress point between the given starting and ending CGRects
     */
-    public static func interpolateFrom(fromValue: CGRect, to toValue: CGRect, withProgress progress: CGFloat) -> CGRect {
+    public static func interpolateFrom(_ fromValue: CGRect, to toValue: CGRect, withProgress progress: CGFloat) -> CGRect {
         assert((0 <= progress) && (progress <= 1), "Progress must be between 0 and 1")
-        let interpolatedOrigin = CGPoint.interpolateFrom(fromValue: fromValue.origin, to: toValue.origin, withProgress: progress)
-        let interpolatedSize = CGSize.interpolateFrom(fromValue: fromValue.size, to: toValue.size, withProgress: progress)
-        return CGRect(x: interpolatedOrigin.x,
-                      y: interpolatedOrigin.y,
-                      width: interpolatedSize.width,
-                      height: interpolatedSize.height)
+        let interpolatedOrigin = CGPoint.interpolateFrom(fromValue.origin, to: toValue.origin, withProgress: progress)
+        let interpolatedSize = CGSize.interpolateFrom(fromValue.size, to: toValue.size, withProgress: progress)
+        return CGRect(x: interpolatedOrigin.x, y: interpolatedOrigin.y, width: interpolatedSize.width, height: interpolatedSize.height)
     }
 }
 
@@ -109,7 +106,7 @@ extension UIColor : Interpolatable {
     
     - returns: The UIColor at the given progress point between the given starting and ending UIColors
     */
-    public static func interpolateFrom(fromValue: UIColor, to toValue: UIColor, withProgress progress: CGFloat) -> UIColor {
+    public static func interpolateFrom(_ fromValue: UIColor, to toValue: UIColor, withProgress progress: CGFloat) -> UIColor {
         assert((0 <= progress) && (progress <= 1), "Progress must be between 0 and 1")
         var fromRed : CGFloat = 0
         var fromGreen : CGFloat = 0
@@ -121,20 +118,20 @@ extension UIColor : Interpolatable {
         var toBlue : CGFloat = 0
         var toAlpha : CGFloat = 0
         
-        let hasStartColor = razGetRed(red: &fromRed, green: &fromGreen, blue: &fromBlue, alpha: &fromAlpha, fromColor: fromValue)
-        let hasEndColor = razGetRed(red: &toRed, green: &toGreen, blue: &toBlue, alpha: &toAlpha, fromColor: toValue)
+        let hasStartColor = razGetRed(&fromRed, green: &fromGreen, blue: &fromBlue, alpha: &fromAlpha, fromColor: fromValue)
+        let hasEndColor = razGetRed(&toRed, green: &toGreen, blue: &toBlue, alpha: &toAlpha, fromColor: toValue)
         
         if hasStartColor && hasEndColor {
-            let red = CGFloat.interpolateFrom(fromValue: fromRed, to: toRed, withProgress: progress)
-            let green = CGFloat.interpolateFrom(fromValue: fromGreen, to: toGreen, withProgress: progress)
-            let blue = CGFloat.interpolateFrom(fromValue: fromBlue, to: toBlue, withProgress: progress)
-            let alpha = CGFloat.interpolateFrom(fromValue: fromAlpha, to: toAlpha, withProgress: progress)
+            let red = CGFloat.interpolateFrom(fromRed, to: toRed, withProgress: progress)
+            let green = CGFloat.interpolateFrom(fromGreen, to: toGreen, withProgress: progress)
+            let blue = CGFloat.interpolateFrom(fromBlue, to: toBlue, withProgress: progress)
+            let alpha = CGFloat.interpolateFrom(fromAlpha, to: toAlpha, withProgress: progress)
             return UIColor(red: red, green: green, blue: blue, alpha: alpha)
         }
         return fromValue
     }
     
-    private static func razGetRed(red: UnsafeMutablePointer<CGFloat>, green: UnsafeMutablePointer<CGFloat>, blue: UnsafeMutablePointer<CGFloat>, alpha: UnsafeMutablePointer<CGFloat>, fromColor color: UIColor) -> Bool {
+    fileprivate static func razGetRed(_ red: UnsafeMutablePointer<CGFloat>, green: UnsafeMutablePointer<CGFloat>, blue: UnsafeMutablePointer<CGFloat>, alpha: UnsafeMutablePointer<CGFloat>, fromColor color: UIColor) -> Bool {
         if color.getRed(red, green: green, blue: blue, alpha: alpha) {return true}
         var white : CGFloat = 0.0
         if color.getWhite(&white, alpha: alpha) {
@@ -148,7 +145,7 @@ extension UIColor : Interpolatable {
 }
 
 extension Bool : Interpolatable {
-    public static func interpolateFrom(fromValue: Bool, to toValue: Bool, withProgress progress: CGFloat) -> Bool {
+    public static func interpolateFrom(_ fromValue: Bool, to toValue: Bool, withProgress progress: CGFloat) -> Bool {
         assert((0 <= progress) && (progress <= 1), "Progress must be between 0 and 1")
         if progress == 0 {
             return fromValue

@@ -11,15 +11,15 @@ import UIKit
 /**
 Animates the view's position along the given path.
 */
-public class PathPositionAnimation : Animation<CGFloat>, Animatable {
-    private let view : UIView
-    public var path : CGPath? {
+open class PathPositionAnimation : Animation<CGFloat>, Animatable {
+    fileprivate let view : UIView
+    open var path : CGPath? {
         didSet {
             createKeyframeAnimation()
         }
     }
-    private let animationKey = "PathPosition"
-    public var rotationMode : String? = kCAAnimationRotateAuto {
+    fileprivate let animationKey = "PathPosition"
+    open var rotationMode : String? = kCAAnimationRotateAuto {
         didSet {
             createKeyframeAnimation()
         }
@@ -43,23 +43,23 @@ public class PathPositionAnimation : Animation<CGFloat>, Animatable {
         NotificationCenter.default.removeObserver(self)
     }
     
-    public func animate(time: CGFloat) {
+    open func animate(_ time: CGFloat) {
         if !hasKeyframes() {return}
         view.layer.timeOffset = CFTimeInterval(self[time])
     }
     
-    public override func validateValue(value: CGFloat) -> Bool {
+    open override func validateValue(_ value: CGFloat) -> Bool {
         return (value >= 0) && (value <= 1)
     }
     
-    @objc private func createKeyframeAnimation() {
+    @objc fileprivate func createKeyframeAnimation() {
         // Set up a CAKeyframeAnimation to move the view along the path
         view.layer.add(pathAnimation(), forKey: animationKey)
         view.layer.speed = 0
         view.layer.timeOffset = 0
     }
     
-    private func pathAnimation() -> CAKeyframeAnimation {
+    fileprivate func pathAnimation() -> CAKeyframeAnimation {
         let animation = CAKeyframeAnimation()
         animation.keyPath = "position"
         animation.path = path

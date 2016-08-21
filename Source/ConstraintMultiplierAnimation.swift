@@ -20,12 +20,12 @@ public enum LayoutAttribute {
 /**
 Animates the `constant` of an `NSLayoutConstraint` to a multiple of an attribute of another view, and lays out the given `superview`.
 */
-public class ConstraintMultiplierAnimation : Animation<CGFloat>, Animatable {
-    private let superview : UIView
-    private let constraint : NSLayoutConstraint
-    private let referenceView : UIView
-    private let attribute : LayoutAttribute
-    private let constant : CGFloat
+open class ConstraintMultiplierAnimation : Animation<CGFloat>, Animatable {
+    fileprivate let superview : UIView
+    fileprivate let constraint : NSLayoutConstraint
+    fileprivate let referenceView : UIView
+    fileprivate let attribute : LayoutAttribute
+    fileprivate let constant : CGFloat
     
     public convenience init(superview: UIView, constraint: NSLayoutConstraint, attribute: LayoutAttribute, referenceView: UIView) {
         self.init(superview: superview, constraint: constraint, attribute: attribute, referenceView: referenceView, constant: 0)
@@ -39,7 +39,7 @@ public class ConstraintMultiplierAnimation : Animation<CGFloat>, Animatable {
         self.constant = constant
     }
     
-    public func animate(time: CGFloat) {
+    open func animate(_ time: CGFloat) {
         if !hasKeyframes() {return}
         let multiplier = self[time]
         var referenceAttributeValue : CGFloat

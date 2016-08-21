@@ -11,9 +11,9 @@ import UIKit
 /**
 Animates the `strokeEnd` property of a `CAShapeLayer`.
 */
-public class LayerStrokeEndAnimation : Animation<CGFloat>, Animatable {
-    private let layer : CAShapeLayer
-    private let animationKey = "StrokeEnd"
+open class LayerStrokeEndAnimation : Animation<CGFloat>, Animatable {
+    fileprivate let layer : CAShapeLayer
+    fileprivate let animationKey = "StrokeEnd"
     
     public init(layer: CAShapeLayer) {
         self.layer = layer
@@ -33,23 +33,23 @@ public class LayerStrokeEndAnimation : Animation<CGFloat>, Animatable {
         NotificationCenter.default.removeObserver(self)
     }
     
-    public func animate(time: CGFloat) {
+    open func animate(_ time: CGFloat) {
         if !hasKeyframes() {return}
         layer.timeOffset = CFTimeInterval(self[time])
     }
     
-    public override func validateValue(value: CGFloat) -> Bool {
+    open override func validateValue(_ value: CGFloat) -> Bool {
         return (value >= 0) && (value <= 1)
     }
     
-    @objc private func createStrokeEndAnimation() {
+    @objc fileprivate func createStrokeEndAnimation() {
         // Set up a CABasicAnimation to change the stroke end
         layer.add(strokeEndAnimation(), forKey: animationKey)
         layer.speed = 0
         layer.timeOffset = 0
     }
     
-    private func strokeEndAnimation() -> CABasicAnimation {
+    fileprivate func strokeEndAnimation() -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = 1
         animation.fromValue = 0
