@@ -92,7 +92,10 @@ extension CGRect : Interpolatable {
         assert((0 <= progress) && (progress <= 1), "Progress must be between 0 and 1")
         let interpolatedOrigin = CGPoint.interpolateFrom(fromValue: fromValue.origin, to: toValue.origin, withProgress: progress)
         let interpolatedSize = CGSize.interpolateFrom(fromValue: fromValue.size, to: toValue.size, withProgress: progress)
-        return CGRect(x: interpolatedOrigin.x, y: interpolatedOrigin.y, width: interpolatedSize.width, height: interpolatedSize.height)
+        return CGRect(x: interpolatedOrigin.x,
+                      y: interpolatedOrigin.y,
+                      width: interpolatedSize.width,
+                      height: interpolatedSize.height)
     }
 }
 
