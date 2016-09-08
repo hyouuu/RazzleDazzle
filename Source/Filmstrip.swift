@@ -14,7 +14,7 @@ private class Keyframe<T: Interpolatable> where T.ValueType == T {
     let easing : EasingFunction
     
     fileprivate convenience init(time: CGFloat, value: T) {
-        self.init(time: time, value: value, easing: EasingFunctionLinear)
+        self.init(time: time, value: value, easing: @escaping EasingFunctionLinear)
     }
     
     fileprivate init(time: CGFloat, value: T, easing: EasingFunction) {
