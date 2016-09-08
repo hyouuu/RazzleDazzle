@@ -53,7 +53,7 @@ open class Filmstrip<T: Interpolatable> where T.ValueType == T {
         keyframes.insert(Keyframe(time: time, value: value), at: index)
     }
     
-    open func setValue(_ value: T, atTime time: CGFloat, easing: EasingFunction) {
+    open func setValue(_ value: T, atTime time: CGFloat, easing: @escaping EasingFunction) {
         let index = indexOfKeyframeAfterTime(time) ?? keyframes.count
         keyframes.insert(Keyframe(time: time, value: value, easing: easing), at: index)
     }
