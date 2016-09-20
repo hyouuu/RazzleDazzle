@@ -9,15 +9,15 @@
 import Foundation
 
 private class Keyframe<T: Interpolatable> where T.ValueType == T {
-    let time : CGFloat
+        let time : CGFloat
     let value : T
     let easing : EasingFunction
     
     fileprivate convenience init(time: CGFloat, value: T) {
-        self.init(time: time, value: value, easing: @escaping EasingFunctionLinear)
+        self.init(time: time, value: value, easing: EasingFunctionLinear)
     }
     
-    fileprivate init(time: CGFloat, value: T, easing: EasingFunction) {
+    fileprivate init(time: CGFloat, value: T, easing: @escaping EasingFunction) {
         self.time = time
         self.value = value
         self.easing = easing
