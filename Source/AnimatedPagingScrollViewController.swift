@@ -145,7 +145,7 @@ open class AnimatedPagingScrollViewController : UIViewController, UIScrollViewDe
             divider = 1
         }
             
-        return 2.0 * (offset + page) / divider)
+        return 2.0 * (offset + page) / divider
     }
     
     open func layoutAttributeFromRazAttribute(_ razAttribute: HorizontalPositionAttribute) -> NSLayoutAttribute {
